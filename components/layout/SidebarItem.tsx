@@ -1,4 +1,7 @@
+import { useRouter } from 'next/router';
+import { useCallback } from 'react';
 import { IconType } from 'react-icons';
+import { signOut } from 'next-auth/react';
 
 interface SidebarItemProps {
   label: string;
@@ -11,10 +14,29 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
   label,
   href,
   icon: Icon,
-  onClick
+  onClick,
 }) => {
+  const router = useRouter();
+  const handleClick = useCallback(
+    async () => {
+      if (onClick) {
+        onClick();
+      }
+
+      if (href) {
+        router.push(href);
+      }
+
+      if (label === 'Logout') {
+        await signOut(); // Call the signOut function from NextAuth
+        router.push('/'); // Redirect to the home page after logout
+      }
+    },
+    [router, onClick, href, label]
+  );
+  
   return (
-    <div className="flex flex-row items-center">
+    <div onClick={handleClick} className="flex flex-row items-center">
       <div
         className="
           relative
