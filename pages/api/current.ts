@@ -1,21 +1,20 @@
-import serverAuth from "@/libs/serverAuth";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from 'next';
+import serverAuth from '@/libs/serverAuth';
 
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== 'GET') {
+    return res.status(405).end();
+  }
 
-export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse
-) {
-    if (req.method !== 'GET') {
-        return res.status(405).end();
+  try {
+    const { currentUser } = await serverAuth(req, res);
+    return res.status(200).json(currentUser);
+  } catch (error) {
+    console.log(error);
+    if (error.message === 'Not signed in') {
+      return res.status(401).json({ error: error.message });
+    } else {
+      return res.status(500).json({ error: 'An unexpected error occurred' });
     }
-
-    try {
-        const { currentUser } = await serverAuth(req);
-
-        return res.status(200).json(currentUser);
-    } catch (error) {
-        console.log(error);
-        return res.status(400).end();
-    }
+  }
 }

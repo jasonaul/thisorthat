@@ -17,12 +17,14 @@ const items = [
     {
         label: 'Notifications',
         href: '/notifications',
-        icon: BsBellFill
+        icon: BsBellFill,
+        auth: true
     },
     {
         label: 'Profiile',
         href: '/users/123',
-        icon: FaUser 
+        icon: FaUser,
+        auth: true 
     }
 ];
 
@@ -37,6 +39,7 @@ const items = [
                         href={item.href}
                         label={item.label}
                         icon={item.icon}
+                        auth={item.auth}
                     />
                 ))}
                 {currentUser && (

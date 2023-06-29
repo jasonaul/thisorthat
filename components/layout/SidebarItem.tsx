@@ -2,12 +2,15 @@ import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import { IconType } from 'react-icons';
 import { signOut } from 'next-auth/react';
+import useCurrentUser from '@/hooks/useCurrentUser';
+import useLoginModal from '@/hooks/useLoginModal';
 
 interface SidebarItemProps {
   label: string;
   href?: string;
   icon: IconType;
   onClick?: () => void;
+  auth?: boolean;
 }
 
 const SidebarItem: React.FC<SidebarItemProps> = ({
@@ -15,7 +18,10 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
   href,
   icon: Icon,
   onClick,
+  auth
 }) => {
+  const loginModal = useLoginModal();
+  const { data: currentUser } = useCurrentUser();
   const router = useRouter();
   const handleClick = useCallback(
     async () => {
@@ -23,7 +29,11 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
         onClick();
       }
 
-      if (href) {
+      if (auth && !currentUser) {
+        loginModal.onOpen();
+      }
+
+      else if (href) {
         router.push(href);
       }
 
@@ -32,7 +42,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
         router.push('/'); // Redirect to the home page after logout
       }
     },
-    [router, onClick, href, label]
+    [router, onClick, href, label, currentUser, auth, loginModal]
   );
   
   return (
