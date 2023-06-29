@@ -22,7 +22,7 @@ const items = [
     },
     {
         label: 'Profiile',
-        href: '/users/123',
+        href: `/users/${currentUser?.id}`,
         icon: FaUser,
         auth: true 
     }
