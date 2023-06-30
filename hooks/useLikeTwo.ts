@@ -24,23 +24,22 @@ const useLikeTwo = ({ postId, userId }: { postId: string, userId?: string}) => {
         if (!currentUser) {
             return loginModal.onOpen();
         }
-
+    
         try {
             let request;
-            if (hasLikedTwo){
-                request = () => axios.delete('/api/like', { data: {postId}})
+            if (hasLikedTwo) {
+                request = () => axios.delete('/api/likeTwo', { data: { postId } });
             } else {
-                request = () => axios.post('/api/like', {postId})
+                request = () => axios.post('/api/likeTwo', { postId });
             }
-
+    
             await request();
             mutateFetchedPost();
             mutateFetchedPosts();
-
+    
             toast.success('Success');
-
         } catch (error) {
-            toast.error('Something went wrong')
+            toast.error('Something went wrong');
         }
     }, [
         currentUser,
@@ -49,7 +48,9 @@ const useLikeTwo = ({ postId, userId }: { postId: string, userId?: string}) => {
         mutateFetchedPost,
         mutateFetchedPosts,
         loginModal
-    ])
+    ]);
+    
+    
 
     return {
         hasLikedTwo,

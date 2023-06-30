@@ -20,8 +20,8 @@ const PostItem: React.FC<PostItemProps> = ({ data, userId }) => {
     const router = useRouter();
     const loginModal = useLoginModal();
     const {data: currentUser} = useCurrentUser();
-    const { hasLiked, toggleLike } = useLike({postId: data.id})
-    const { hasLikedTwo, toggleLikeTwo } = useLikeTwo({postId: data.id})
+    const { hasLiked, toggleLike } = useLike({postId: data.id, userId})
+    const { hasLikedTwo, toggleLikeTwo } = useLikeTwo({postId: data.id, userId})
 
 
     const goToUser = useCallback((event: any) => {
