@@ -5,8 +5,10 @@ import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
 import { AiOutlineMessage } from "react-icons/ai";
 import Avatar from "../Avatar";
+import useLike from "@/hooks/useLike";
+import useLikeTwo from "@/hooks/useLikeTwo";
 
-import { PiNumberCircleTwoFill, PiNumberCircleOneFill } from "react-icons/pi"
+import { PiNumberCircleTwoFill, PiNumberCircleOneFill, PiNumberCircleTwoDuotone, PiNumberCircleOneDuotone } from "react-icons/pi"
 
 
 interface PostItemProps {
@@ -18,6 +20,9 @@ const PostItem: React.FC<PostItemProps> = ({ data, userId }) => {
     const router = useRouter();
     const loginModal = useLoginModal();
     const {data: currentUser} = useCurrentUser();
+    const { hasLiked, toggleLike } = useLike({postId: data.id})
+    const { hasLikedTwo, toggleLikeTwo } = useLikeTwo({postId: data.id})
+
 
     const goToUser = useCallback((event: any) => {
         event.stopPropagation();
@@ -33,18 +38,26 @@ const PostItem: React.FC<PostItemProps> = ({ data, userId }) => {
     const onOne = useCallback((event: any) => {
         event.stopPropagation();
 
-        loginModal.onOpen()
+        if (!currentUser) {
+            return loginModal.onOpen();
+        }
 
-    }, [loginModal]);
+        toggleLike();
+
+    }, [loginModal, currentUser, toggleLike]);
 
     //onOne replaced "onLike", since we aren't doing simple likes
 
     const onTwo = useCallback((event: any) => {
         event.stopPropagation();
 
-        loginModal.onOpen()
+        if (!currentUser) {
+            return loginModal.onOpen();
+        }
 
-    }, [loginModal]);
+        toggleLikeTwo();
+
+    }, [loginModal, currentUser, toggleLikeTwo]);
 
     const createdAt = useMemo(() => {
         if (!data?.createdAt) {
@@ -52,7 +65,10 @@ const PostItem: React.FC<PostItemProps> = ({ data, userId }) => {
         }
 
         return formatDistanceToNowStrict(new Date(data.createdAt))
-    }, [data?.createdAt])
+    }, [data?.createdAt]);
+
+    const OneIcon = hasLiked ? PiNumberCircleOneFill : PiNumberCircleOneDuotone;
+    const TwoIcon = hasLikedTwo ? PiNumberCircleTwoFill : PiNumberCircleTwoDuotone;
 
 
 
@@ -107,9 +123,9 @@ const PostItem: React.FC<PostItemProps> = ({ data, userId }) => {
                              cursor-pointer 
                              transition
                               hover:text-red-500">
-                            <PiNumberCircleOneFill size={30}/>
+                            <OneIcon size={30} color={hasLiked ? 'red' : ''}/>
                             <p>
-                                {data.comments?.length || 0}
+                                {data.likedIds.length}
                             </p>
                         </div>
                         <div 
@@ -122,9 +138,10 @@ const PostItem: React.FC<PostItemProps> = ({ data, userId }) => {
                              gap-2 
                              cursor-pointer 
                              transition
-                              hover:text-green-500">                            <PiNumberCircleTwoFill size={30}/>
-                            <p>
-                                {data.comments?.length || 0}
+                              hover:text-green-500">                            
+                              <TwoIcon size={30} color={hasLikedTwo ? 'green' : ''}/>
+                              <p>
+                                {data.likedIdsTwo.length}
                             </p>
                         </div>
                         <div className="flex flex-row items-center text-neutral-500 gap-2 cursor-pointer transition hover:text-sky-500">
