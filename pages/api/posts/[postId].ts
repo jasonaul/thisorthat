@@ -1,4 +1,4 @@
-import { NextApiRequest NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb"
 
 export default async function handler(
@@ -18,20 +18,21 @@ export default async function handler(
 
         const post = await prisma.post.findUnique({
             where: {
-                id: postId
+              id: postId
             },
             include: {
-                user: true,
-                comments: {
-                    include: {
-                        user: true
-                    },
-                    orderBy: {
-                        createdAt: 'desc'
-                    }
+              user: true,
+              comments: {
+                include: {
+                  user: true
+                },
+                orderBy: {
+                  created: 'desc'
                 }
+              }
             }
-        })
+          });
+          
 
         return res.status(200).json(post);
 
