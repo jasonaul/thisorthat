@@ -43,16 +43,10 @@ export default async function likeHandlerTwo(
     let updatedLikedIdsTwo = [...(post.likedIdsTwo || [])];
 
     if (req.method === 'POST') {
-      updatedLikedIdsTwo.push(currentUser.id)
+      updatedLikedIdsTwo.push(currentUser.id);
       
       try {
-        const post = await prisma.post.findUnique({
-          where: {
-            id: postId
-          }
-        })
-
-        if (post?.userId) {
+        if (post.userId) {
           await prisma.notification.create({
             data: {
               body: 'Someone voted on an answer!',
@@ -67,7 +61,7 @@ export default async function likeHandlerTwo(
             data: {
               hasNotification: true
             }
-          })
+          });
         }
       } catch (error) {
         console.log(error);
@@ -75,7 +69,7 @@ export default async function likeHandlerTwo(
     }
 
     if (req.method === 'DELETE') {
-      updatedLikedIdsTwo = updatedLikedIdsTwo.filter((likedId) => likedId !== currentUser.id)
+      updatedLikedIdsTwo = updatedLikedIdsTwo.filter((likedId) => likedId !== currentUser.id);
     }
 
     const updatedPost = await prisma.post.update({
