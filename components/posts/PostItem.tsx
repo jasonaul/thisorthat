@@ -1,12 +1,12 @@
-import useCurrentUser from "@/hooks/useCurrentUser";
-import useLoginModal from "@/hooks/useLoginModal";
-import { formatDistanceToNowStrict } from "date-fns";
-import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
 import { AiOutlineMessage } from "react-icons/ai";
 import Avatar from "../Avatar";
+import useCurrentUser from "@/hooks/useCurrentUser";
+import useLoginModal from "@/hooks/useLoginModal";
 import useLike from "@/hooks/useLike";
 import useLikeTwo from "@/hooks/useLikeTwo";
+import { formatDistanceToNowStrict } from "date-fns";
+import { useRouter } from "next/router";
 
 import {
   PiNumberCircleTwoFill,
@@ -21,73 +21,68 @@ interface PostItemProps {
 }
 
 const PostItem: React.FC<PostItemProps> = ({ data, userId }) => {
-  const router = useRouter();
-  const loginModal = useLoginModal();
-  const { data: currentUser } = useCurrentUser();
-  const { hasLiked, toggleLike } = useLike({ postId: data?.id, userId });
-  const { hasLikedTwo, toggleLikeTwo } = useLikeTwo({
-    postId: data?.id,
-    userId,
-  });
-
-  if (!data) {
-    return null; // or handle the null/undefined case appropriately
-  }
-
-  const goToUser = useCallback(
-    (event: any) => {
-      event.stopPropagation();
-
-      router.push(`/users/${data.user?.id}`);
-    },
-    [router, data.user?.id]
-  );
-
-  const goToPost = useCallback(() => {
-    router.push(`/posts/${data.id}`);
-  }, [router, data.id]);
-
-  const onOne = useCallback(() => {
-    if (!currentUser) {
-      return loginModal.onOpen();
+    const router = useRouter();
+    const loginModal = useLoginModal();
+    const { data: currentUser } = useCurrentUser();
+    const { hasLiked, toggleLike } = useLike({ postId: data?.id, userId });
+    const { hasLikedTwo, toggleLikeTwo } = useLikeTwo({
+      postId: data?.id,
+      userId,
+    });
+  
+    const goToUser = useCallback(
+      (event: any) => {
+        event.stopPropagation();
+        if (data?.user?.id) router.push(`/users/${data.user.id}`);
+      },
+      [router, data?.user?.id]
+    );
+  
+    const goToPost = useCallback(() => {
+      if (data?.id) router.push(`/posts/${data.id}`);
+    }, [router, data?.id]);
+  
+    const onOne = useCallback(() => {
+      if (!currentUser) {
+        return loginModal.onOpen();
+      }
+  
+      toggleLike();
+    }, [currentUser, loginModal, toggleLike]);
+  
+    const onTwo = useCallback(() => {
+      if (!currentUser) {
+        return loginModal.onOpen();
+      }
+  
+      toggleLikeTwo();
+    }, [currentUser, loginModal, toggleLikeTwo]);
+  
+    const createdAt = useMemo(() => {
+      if (!data?.createdAt) {
+        return null;
+      }
+  
+      return formatDistanceToNowStrict(new Date(data.createdAt));
+    }, [data?.createdAt]);
+  
+    const OneIcon = useMemo(() => {
+      return hasLiked ? PiNumberCircleOneFill : PiNumberCircleOneDuotone;
+    }, [hasLiked]);
+  
+    const TwoIcon = useMemo(() => {
+      return hasLikedTwo ? PiNumberCircleTwoFill : PiNumberCircleTwoDuotone;
+    }, [hasLikedTwo]);
+  
+    if (!data) {
+      return null; // or handle the null/undefined case appropriately
     }
 
-    toggleLike();
-  }, [currentUser, loginModal, toggleLike]);
-
-  const onTwo = useCallback(() => {
-    if (!currentUser) {
-      return loginModal.onOpen();
-    }
-
-    toggleLikeTwo();
-  }, [currentUser, loginModal, toggleLikeTwo]);
-
-  const createdAt = useMemo(() => {
-    if (!data?.createdAt) {
-      return null;
-    }
-
-    return formatDistanceToNowStrict(new Date(data.createdAt));
-  }, [data?.createdAt]);
-
-  const OneIcon = hasLiked ? PiNumberCircleOneFill : PiNumberCircleOneDuotone;
-  const TwoIcon = hasLikedTwo ? PiNumberCircleTwoFill : PiNumberCircleTwoDuotone;
-
-
-
-    return (
-        <div
-            onClick={goToPost}
-            className="
-                border-b-[1px]
-                border-neutral-800
-                p-5
-                cursor-pointer
-                hover:bg-neutral-900
-                transition
-            "
-        >
+  return (
+    <div
+      onClick={goToPost}
+      className="border-b-[1px] border-neutral-800 p-5 cursor-pointer hover:bg-neutral-900 transition"
+    >
             <div className="flex flex-row items-start gap-3">
                 <Avatar 
                     userId={data.user?.id}
