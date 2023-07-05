@@ -34,58 +34,45 @@ const PostItem: React.FC<PostItemProps> = ({ data, userId }) => {
     return null; // or handle the null/undefined case appropriately
   }
 
-  const goToUser = useCallback((event: any) => {
-    event.stopPropagation();
+  const goToUser = useCallback(
+    (event: any) => {
+      event.stopPropagation();
 
-    router.push(`/users/${data.user?.id}`);
-  }, [router, data.user?.id]);
+      router.push(`/users/${data.user?.id}`);
+    },
+    [router, data.user?.id]
+  );
 
   const goToPost = useCallback(() => {
     router.push(`/posts/${data.id}`);
   }, [router, data.id]);
 
+  const onOne = useCallback(() => {
+    if (!currentUser) {
+      return loginModal.onOpen();
+    }
 
-    const onOne = useCallback((event: any) => {
-        event.stopPropagation();
+    toggleLike();
+  }, [currentUser, loginModal, toggleLike]);
 
-        console.log('Clicked onOne'); // Add this console log statement
+  const onTwo = useCallback(() => {
+    if (!currentUser) {
+      return loginModal.onOpen();
+    }
 
+    toggleLikeTwo();
+  }, [currentUser, loginModal, toggleLikeTwo]);
 
-        if (!currentUser) {
-            return loginModal.onOpen();
-        }
+  const createdAt = useMemo(() => {
+    if (!data?.createdAt) {
+      return null;
+    }
 
-        toggleLike();
+    return formatDistanceToNowStrict(new Date(data.createdAt));
+  }, [data?.createdAt]);
 
-    }, [loginModal, currentUser, toggleLike]);
-
-    //onOne replaced "onLike", since we aren't doing simple likes
-
-    const onTwo = useCallback((event: any) => {
-        event.stopPropagation();
-
-        console.log('Clicked onTwo'); // Add this console log statement
-
-    
-        if (!currentUser) {
-            return loginModal.onOpen();
-        }
-    
-        toggleLikeTwo();
-    
-    }, [loginModal, currentUser, toggleLikeTwo]);
-    
-
-    const createdAt = useMemo(() => {
-        if (!data?.createdAt) {
-            return null;
-        }
-
-        return formatDistanceToNowStrict(new Date(data.createdAt))
-    }, [data?.createdAt]);
-
-    const OneIcon = hasLiked ? PiNumberCircleOneFill : PiNumberCircleOneDuotone;
-    const TwoIcon = hasLikedTwo ? PiNumberCircleTwoFill : PiNumberCircleTwoDuotone;
+  const OneIcon = hasLiked ? PiNumberCircleOneFill : PiNumberCircleOneDuotone;
+  const TwoIcon = hasLikedTwo ? PiNumberCircleTwoFill : PiNumberCircleTwoDuotone;
 
 
 
