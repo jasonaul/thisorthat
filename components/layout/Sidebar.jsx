@@ -18,7 +18,8 @@ const items = [
         label: 'Notifications',
         href: '/notifications',
         icon: BsBellFill,
-        auth: true
+        auth: true,
+        alert: currentUser?.hasNotification
     },
     {
         label: 'Profiile',
@@ -40,6 +41,7 @@ const items = [
                         label={item.label}
                         icon={item.icon}
                         auth={item.auth}
+                        alert={item.alert}
                     />
                 ))}
                 {currentUser && (
