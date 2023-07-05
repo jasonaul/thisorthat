@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
 import likeHandler from "../like";
-import likeHandlerTwo from "../likeTwo";
+// import likeHandlerTwo from "../likeTwo";
 
 
 
@@ -42,7 +42,7 @@ export default async function handler(
   } else if (req.method === "POST" || req.method === "DELETE") {
     if (req.url?.includes("likeTwo")) {
       // Delegate likeTwo-related operations to likeHandlerTwo
-      await likeHandlerTwo(req, res);
+      // await likeHandlerTwo(req, res);
     } else {
       // Delegate like-related operations to likeHandler
       await likeHandler(req, res);
