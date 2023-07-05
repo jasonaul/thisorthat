@@ -18,16 +18,25 @@ const PostModal: React.FC<PostModalProps> = ({
   onSubmit,
   onCancel,
 }) => {
+  const body = (
+    <Form
+      placeholder="Enter your post"
+      value={postText}
+      onChange={onChange}
+      onSubmit={onSubmit}
+      onCancel={onCancel}
+    />
+  );
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <Form
-        placeholder="Enter your post"
-        value={postText}
-        onChange={onChange}
-        onSubmit={onSubmit}
-        onCancel={onCancel}
-      />
-    </Modal>
+    <Modal 
+      isOpen={isOpen} 
+      onClose={onClose} 
+      onSubmit={onSubmit} 
+      title="Post" 
+      body={body} 
+      actionLabel="Submit"
+    />
   );
 };
 
