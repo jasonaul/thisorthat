@@ -44,6 +44,7 @@ export default async function likeHandlerTwo(
 
     if (req.method === 'POST') {
       updatedLikedIdsTwo.push(currentUser.id)
+      
       try {
         const post = await prisma.post.findUnique({
           where: {
