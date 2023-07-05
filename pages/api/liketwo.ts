@@ -1,18 +1,29 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '@/libs/prismadb';
-import serverAuth from '@/libs/serverAuth';
+import { NextApiRequest, NextApiResponse } from "next";
+import prisma from "@/libs/prismadb";
+import serverAuth from "@/libs/serverAuth";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function likeHandlerTwo(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  console.log('Reached the /api/likeTwo endpoint');
+
   if (req.method !== 'POST' && req.method !== 'DELETE') {
+    console.log('Invalid request method:', req.method);
     return res.status(405).end();
   }
 
   try {
-    const { postId } = req.body;
+    const postId = req.method === 'POST' ? req.body.postId : req.query.postId;
+
+    console.log('Post ID:', postId);
 
     const { currentUser } = await serverAuth(req, res);
 
+    console.log('Current user:', currentUser);
+
     if (!postId || typeof postId !== 'string') {
+      console.log('Invalid ID:', postId);
       throw new Error('Invalid ID');
     }
 
@@ -22,20 +33,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
     });
 
+    console.log('Post:', post);
+
     if (!post) {
+      console.log('Post not found');
       throw new Error('Invalid ID');
     }
 
     let updatedLikedIdsTwo = [...(post.likedIdsTwo || [])];
 
     if (req.method === 'POST') {
-      if (!updatedLikedIdsTwo.includes(currentUser.id)) {
-        updatedLikedIdsTwo.push(currentUser.id);
-      }
+      updatedLikedIdsTwo.push(currentUser.id)
     }
 
     if (req.method === 'DELETE') {
-      updatedLikedIdsTwo = updatedLikedIdsTwo.filter((likedIdTwo) => likedIdTwo !== currentUser.id);
+      updatedLikedIdsTwo = updatedLikedIdsTwo.filter((likedId) => likedId !== currentUser.id)
     }
 
     const updatedPost = await prisma.post.update({
@@ -47,9 +59,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
     });
 
-    return res.status(200).json(updatedPost);
+    console.log('Updated post:', updatedPost);
+
+    res.status(200).json(updatedPost);
   } catch (error) {
     console.log(error);
-    return res.status(400).end();
+    res.status(400).end();
   }
 }

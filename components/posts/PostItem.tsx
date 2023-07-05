@@ -8,35 +8,48 @@ import Avatar from "../Avatar";
 import useLike from "@/hooks/useLike";
 import useLikeTwo from "@/hooks/useLikeTwo";
 
-import { PiNumberCircleTwoFill, PiNumberCircleOneFill, PiNumberCircleTwoDuotone, PiNumberCircleOneDuotone } from "react-icons/pi"
-
+import {
+  PiNumberCircleTwoFill,
+  PiNumberCircleOneFill,
+  PiNumberCircleTwoDuotone,
+  PiNumberCircleOneDuotone,
+} from "react-icons/pi";
 
 interface PostItemProps {
-    data: Record<string, any>;
-    userId?: string;
+  data: Record<string, any>;
+  userId?: string;
 }
 
 const PostItem: React.FC<PostItemProps> = ({ data, userId }) => {
-    const router = useRouter();
-    const loginModal = useLoginModal();
-    const {data: currentUser} = useCurrentUser();
-    const { hasLiked, toggleLike } = useLike({postId: data.id, userId})
-    const { hasLikedTwo, toggleLikeTwo } = useLikeTwo({postId: data.id, userId})
+  const router = useRouter();
+  const loginModal = useLoginModal();
+  const { data: currentUser } = useCurrentUser();
+  const { hasLiked, toggleLike } = useLike({ postId: data?.id, userId });
+  const { hasLikedTwo, toggleLikeTwo } = useLikeTwo({
+    postId: data?.id,
+    userId,
+  });
 
+  if (!data) {
+    return null; // or handle the null/undefined case appropriately
+  }
 
-    const goToUser = useCallback((event: any) => {
-        event.stopPropagation();
+  const goToUser = useCallback((event: any) => {
+    event.stopPropagation();
 
-        router.push(`/users/${data.user.id}`)
-    }, [router, data.user?.id])
+    router.push(`/users/${data.user?.id}`);
+  }, [router, data.user?.id]);
 
-    const goToPost = useCallback(() => {
-        router.push(`/posts/${data.id}`)
-    }, [router, data.id]);
+  const goToPost = useCallback(() => {
+    router.push(`/posts/${data.id}`);
+  }, [router, data.id]);
 
 
     const onOne = useCallback((event: any) => {
         event.stopPropagation();
+
+        console.log('Clicked onOne'); // Add this console log statement
+
 
         if (!currentUser) {
             return loginModal.onOpen();
@@ -51,13 +64,17 @@ const PostItem: React.FC<PostItemProps> = ({ data, userId }) => {
     const onTwo = useCallback((event: any) => {
         event.stopPropagation();
 
+        console.log('Clicked onTwo'); // Add this console log statement
+
+    
         if (!currentUser) {
             return loginModal.onOpen();
         }
-
+    
         toggleLikeTwo();
-
+    
     }, [loginModal, currentUser, toggleLikeTwo]);
+    
 
     const createdAt = useMemo(() => {
         if (!data?.createdAt) {

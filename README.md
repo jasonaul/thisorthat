@@ -36,3 +36,93 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+```
+thisorthat
+├─ .eslintrc.json
+├─ README.md
+├─ components
+│  ├─ Avatar.tsx
+│  ├─ Button.tsx
+│  ├─ Form.tsx
+│  ├─ Header.tsx
+│  ├─ ImageUpload.tsx
+│  ├─ Input.tsx
+│  ├─ Modal.tsx
+│  ├─ layout
+│  │  ├─ FollowBar.tsx
+│  │  ├─ Sidebar.jsx
+│  │  ├─ SidebarItem.tsx
+│  │  ├─ SidebarLogo.tsx
+│  │  └─ SidebarThisorThatButton.jsx
+│  ├─ layout.tsx
+│  ├─ modals
+│  │  ├─ EditModal.tsx
+│  │  ├─ LoginModal.tsx
+│  │  └─ RegisterModal.tsx
+│  ├─ posts
+│  │  ├─ PostFeed.tsx
+│  │  └─ PostItem.tsx
+│  └─ users
+│     ├─ UserBio.tsx
+│     └─ UserHero.tsx
+├─ hooks
+│  ├─ useCurrentUser.ts
+│  ├─ useEditModal.ts
+│  ├─ useFollow.ts
+│  ├─ useLike.ts
+│  ├─ useLikeTwo.ts
+│  ├─ useLoginModal.ts
+│  ├─ usePost.ts
+│  ├─ usePosts.ts
+│  ├─ useRegisterModal.ts
+│  ├─ useUser.ts
+│  └─ useUsers.ts
+├─ libs
+│  ├─ fetcher.ts
+│  ├─ prismadb.ts
+│  └─ serverAuth.ts
+├─ next.config.js
+├─ node_modules
+├─ package-lock.json
+├─ package.json
+├─ pages
+│  ├─ _app.tsx
+│  ├─ api
+│  │  ├─ auth
+│  │  │  └─ [...nextauth].ts
+│  │  ├─ current.ts
+│  │  ├─ edit.ts
+│  │  ├─ follow.ts
+│  │  ├─ like.ts
+│  │  ├─ likeTwo.ts
+│  │  ├─ posts
+│  │  │  ├─ [postId].ts
+│  │  │  └─ index.ts
+│  │  ├─ register.ts
+│  │  └─ users
+│  │     ├─ [userId].ts
+│  │     └─ index.ts
+│  ├─ index.tsx
+│  ├─ posts
+│  │  └─ [postId].tsx
+│  └─ users
+│     └─ [userId].tsx
+├─ postcss.config.js
+├─ prisma
+│  └─ schema.prisma
+├─ private.key
+├─ public
+│  ├─ favicon.ico
+│  ├─ images
+│  │  └─ placeholder.png
+│  ├─ next.svg
+│  └─ vercel.svg
+├─ public.key
+├─ sessionSecretGenerator.js
+├─ styles
+│  └─ globals.css
+├─ tailwind.config.js
+└─ tsconfig.json
+
+```
