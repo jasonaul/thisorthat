@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
 import likeHandler from "../like";
-import likeHandlerTwo from "../likeTwo";
+import likeHandlerTwo from "./likeTwo";
 
 
 
