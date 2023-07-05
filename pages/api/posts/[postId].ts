@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
 import likeHandler from "../like";
-import likeHandlerTwo from "../../api/likeTwo";
+import likeHandlerTwo from "../../../pages/api/likeTwo";
+
 
 
 export default async function handler(
