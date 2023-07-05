@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { BsQuestionCircle } from "react-icons/bs";
 import useCurrentUser from "@/hooks/useCurrentUser";
-import PostModal from "@/hooks/PostModal";
+// import PostModal from "@/components/modals/PostModal";
 
 const SidebarThisorThatButton = () => {
   const router = useRouter();
@@ -70,14 +70,14 @@ const SidebarThisorThatButton = () => {
           </p>
         </div>
       </div>
-      <PostModal
+      {/* <PostModal
         isOpen={postModal.isOpen}
         postText={postModal.postText}
         onClose={postModal.closeModal}
         onChange={postModal.handlePostTextChange}
         onSubmit={postModal.handleSubmit}
         onCancel={postModal.closeModal}
-      />
+      /> */}
     </>
   );
 };
