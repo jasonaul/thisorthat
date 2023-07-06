@@ -6,7 +6,7 @@ export default function Home() {
   return (
    <>
    <Header label="Home" />
-   <Form placeholder="What's your question?" />
+   <Form placeholder="Which two options are you trying to pick between?" />
    <PostFeed />
    </>
   )
